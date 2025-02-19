@@ -64,3 +64,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+.draggable {
+  -webkit-app-region: drag;
+}
+
+.nondraggable {
+  -webkit-app-region: no-drag;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
