@@ -1,23 +1,6 @@
 import { getMediaSources } from "@/lib/utils";
+import { SourceDeviceStateProps } from "@/types";
 import { useReducer } from "react";
-
-export type SourceDeviceStateProps = {
-  displays?: {
-    appIcon: null;
-    display_id: string;
-    id: string;
-    name: string;
-    thumbnail: unknown[];
-  }[];
-  audioInputs?: {
-    deviceId: string;
-    kind: string;
-    label: string;
-    groupId: string;
-  }[];
-  error?: string | null;
-  isPending?: boolean;
-};
 
 type DisplayDeviceActionProps = {
   type: "GET_DEVICES";
