@@ -69,7 +69,7 @@
   -webkit-app-region: drag;
 }
 
-.nondraggable {
+.non-draggable {
   -webkit-app-region: no-drag;
 }
 
