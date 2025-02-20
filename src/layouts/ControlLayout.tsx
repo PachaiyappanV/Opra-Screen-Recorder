@@ -20,7 +20,7 @@ const ControlLayout = ({ children, className }: Props) => {
       className={cn(
         className,
         isVisible && "invisible",
-        "bg-[#171717] flex px-1 flex-col rounded-3xl overflow-hidden"
+        "bg-[#171717] border-2 border-neutral-700 flex px-1 flex-col rounded-3xl overflow-hidden"
       )}
     >
       <div className="flex justify-between items-center p-5 draggable ">
@@ -34,7 +34,7 @@ const ControlLayout = ({ children, className }: Props) => {
         />
       </div>
       <div className="flex-1 h-0 overflow-auto">{children}</div>
-      <div className="p-5 flex w-full item-center gap-x-2">
+      <div className="p-5 flex w-full items-center  gap-x-2">
         <img src="/opal-logo.svg" alt="app logo" />
         <p className="text-2xl text-white">Opal</p>
       </div>
