@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, desktopCapturer, ipcMain } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
@@ -25,25 +25,96 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   : RENDERER_DIST;
 
 let win: BrowserWindow | null;
+let studio: BrowserWindow | null;
+let floatingWebCam: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+    height: 500,
+    width: 400,
+    hasShadow: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    focusable: true,
+    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
     webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      devTools: true,
       preload: path.join(__dirname, "preload.mjs"),
     },
   });
+
+  studio = new BrowserWindow({
+    height: 50,
+    width: 400,
+    minHeight: 70,
+    maxHeight: 400,
+    minWidth: 300,
+    maxWidth: 400,
+    hasShadow: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    focusable: true,
+    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      devTools: true,
+      preload: path.join(__dirname, "preload.mjs"),
+    },
+  });
+
+  floatingWebCam = new BrowserWindow({
+    height: 200,
+    width: 400,
+    minHeight: 70,
+    maxHeight: 400,
+    minWidth: 300,
+    maxWidth: 400,
+    hasShadow: false,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    focusable: true,
+    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      devTools: true,
+      preload: path.join(__dirname, "preload.mjs"),
+    },
+  });
+
+  win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  win.setAlwaysOnTop(true);
+
+  studio.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  studio.setAlwaysOnTop(true);
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
   });
 
+  studio.webContents.on("did-finish-load", () => {
+    studio?.webContents.send(
+      "main-process-message",
+      new Date().toLocaleString()
+    );
+  });
+
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
+    studio.loadURL(`${import.meta.env.VITE_APP_URL}/studio.html`);
+    floatingWebCam.loadURL(`${import.meta.env.VITE_APP_URL}/webcam.html`);
   } else {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, "index.html"));
+    studio.loadFile(path.join(RENDERER_DIST, "studio.html"));
+    floatingWebCam.loadFile(path.join(RENDERER_DIST, "webcam.html"));
   }
 }
 
@@ -54,7 +125,29 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
     win = null;
+    studio = null;
+    floatingWebCam = null;
   }
+});
+
+ipcMain.on("closeApp", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+    win = null;
+    studio = null;
+    floatingWebCam = null;
+  }
+});
+
+ipcMain.handle("getSources", async () => {
+  const sources = await desktopCapturer.getSources({
+    thumbnailSize: { height: 100, width: 150 },
+    fetchWindowIcons: true,
+    types: ["window", "screen"],
+  });
+
+  console.log(sources);
+  return sources;
 });
 
 app.on("activate", () => {
