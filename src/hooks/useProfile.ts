@@ -2,9 +2,11 @@ import { httpClient } from "@/lib/utils";
 import { Profile } from "@/types";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
+import { useMediaSources } from "./useMediaSources";
 
 export const useProfile = () => {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const { state, fetchMediaResources } = useMediaSources();
 
   const { user } = useUser();
 
@@ -21,10 +23,12 @@ export const useProfile = () => {
   useEffect(() => {
     if (user && user.id) {
       fetchUserProfile(user.id);
+      fetchMediaResources();
     }
   }, [user]);
 
   return {
     profile,
+    state,
   };
 };
