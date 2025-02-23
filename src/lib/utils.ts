@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import axios from "axios";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,3 +22,9 @@ export const getMediaSources = async () => {
 
   return { displays, audioInputs };
 };
+
+export const studioSchema = z.object({
+  screen: z.string(),
+  audio: z.string(),
+  preset: z.enum(["HD", "SD"]),
+});
