@@ -28,7 +28,7 @@ export const useStudioSettings = (
   });
 
   useEffect(() => {
-    if (screen && audio && preset) {
+    if (screen && audio) {
       window.ipcRenderer.send("media-sources", {
         screen,
         audio,
@@ -37,7 +37,7 @@ export const useStudioSettings = (
         plan,
       });
     }
-  }, []);
+  }, [screen, audio]);
 
   useEffect(() => {
     const subscribe = watch((values) => {
