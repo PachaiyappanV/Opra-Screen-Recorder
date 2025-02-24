@@ -28,3 +28,26 @@ export const studioSchema = z.object({
   audio: z.string(),
   preset: z.enum(["HD", "SD"]),
 });
+
+export const updateStudio = async (
+  id: string,
+  screen: string,
+  audio: string,
+  preset: "SD" | "HD"
+) => {
+  console.log("update studio", { id, screen, audio, preset });
+  const response = await httpClient.put(
+    `/studio/${id}`,
+    {
+      screen,
+      audio,
+      preset,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+};
