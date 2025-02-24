@@ -153,8 +153,24 @@ ipcMain.handle("getSources", async () => {
     types: ["window", "screen"],
   });
 
-  console.log(sources);
   return sources;
+});
+
+ipcMain.on("media-sources", (event, payload) => {
+  studio?.webContents.send("profile-recieved", payload);
+});
+
+ipcMain.on("resize-studio", (event, payload) => {
+  if (payload.shrink) {
+    studio?.setSize(400, 100);
+  }
+  if (!payload.shrink) {
+    studio?.setSize(400, 250);
+  }
+});
+
+ipcMain.on("hide-plugin", (event, payload) => {
+  win?.webContents.send("hide-plugin", payload);
 });
 
 app.on("activate", () => {
