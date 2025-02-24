@@ -56,7 +56,7 @@ const MediaConfig = ({ state, user }: Props) => {
         </div>
       )}
       <div className="flex gap-x-5 justify-center items-center">
-        <Monitor color="#575655" size={36} />
+        <Monitor color="#575655" size={36} stroke="white" />
         <select
           {...register("screen")}
           className="outline-none cursor-pointer px-5 py-2 rounded-xl border-2 text-white border-[#575655] bg-transparent w-full"
@@ -75,7 +75,7 @@ const MediaConfig = ({ state, user }: Props) => {
       </div>
 
       <div className="flex gap-x-5 justify-center items-center">
-        <Mic color="#575655" size={36} />
+        <Mic color="#575655" size={36} stroke="white" />
         <select
           {...register("audio")}
           defaultValue={audio?.deviceId}
@@ -95,7 +95,7 @@ const MediaConfig = ({ state, user }: Props) => {
       </div>
 
       <div className="flex gap-x-5 justify-center items-center">
-        <Settings2 color="#575655" size={36} />
+        <Settings2 color="#575655" size={36} stroke="white" />
         <select
           {...register("preset")}
           className="outline-none cursor-pointer px-5 py-2 rounded-xl border-2 text-white border-[#575655] bg-transparent w-full"
