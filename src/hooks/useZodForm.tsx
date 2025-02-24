@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import z, { ZodSchema } from "zod";
+import { useForm, DefaultValues } from "react-hook-form";
+import z from "zod";
 
-const useZodForm = (
-  schema: ZodSchema,
+const useZodForm = <T extends z.ZodType<any>>(
+  schema: T,
 
-  defaultValues?: any
+  defaultValues?: DefaultValues<z.TypeOf<T>> | undefined
 ) => {
   const {
     register,
@@ -13,7 +13,7 @@ const useZodForm = (
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof schema>>({
+  } = useForm<z.infer<T>>({
     resolver: zodResolver(schema),
     defaultValues,
   });
