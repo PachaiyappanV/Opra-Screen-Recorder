@@ -37,7 +37,7 @@ let floatingWebCam: BrowserWindow | null;
 
 function createWindow() {
   win = new BrowserWindow({
-    height: 500,
+    height: 370,
     width: 400,
     hasShadow: false,
     frame: false,
@@ -54,7 +54,7 @@ function createWindow() {
   });
 
   studio = new BrowserWindow({
-    height: 50,
+    height: 210,
     width: 400,
     minHeight: 70,
     maxHeight: 400,
@@ -157,7 +157,7 @@ ipcMain.handle("getSources", async () => {
 });
 
 ipcMain.on("media-sources", (event, payload) => {
-  studio?.webContents.send("profile-recieved", payload);
+  studio?.webContents.send("profile-received", payload);
 });
 
 ipcMain.on("resize-studio", (event, payload) => {
