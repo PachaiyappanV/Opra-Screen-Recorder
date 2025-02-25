@@ -68,12 +68,10 @@ function createWindow() {
   });
 
   floatingWebCam = new BrowserWindow({
-    height: 200,
-    width: 400,
-    minHeight: 70,
-    maxHeight: 400,
-    minWidth: 300,
-    maxWidth: 400,
+    height: 250,
+    width: 250,
+    maxHeight: 250,
+    maxWidth: 250,
     hasShadow: false,
     frame: false,
     transparent: true,
@@ -89,11 +87,14 @@ function createWindow() {
   });
 
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  win.setAlwaysOnTop(true, "screen-saver");
+  win.setAlwaysOnTop(true, "screen-saver", 1);
 
   studio.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  studio.setAlwaysOnTop(true, "screen-saver");
+  studio.setAlwaysOnTop(true, "screen-saver", 1);
   studio.setContentProtection(true);
+
+  floatingWebCam.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  floatingWebCam.setAlwaysOnTop(true, "screen-saver", 1);
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
