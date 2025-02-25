@@ -24,13 +24,6 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
   ? path.join(process.env.APP_ROOT, "public")
   : RENDERER_DIST;
 
-// Ensure X11 is set for Linux users to avoid Wayland issues
-if (process.platform === "linux") {
-  if (!process.env.XDG_SESSION_TYPE || process.env.XDG_SESSION_TYPE !== "x11") {
-    process.env.XDG_SESSION_TYPE = "x11";
-  }
-}
-
 let win: BrowserWindow | null;
 let studio: BrowserWindow | null;
 let floatingWebCam: BrowserWindow | null;
@@ -96,10 +89,11 @@ function createWindow() {
   });
 
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  win.setAlwaysOnTop(true);
+  win.setAlwaysOnTop(true, "screen-saver");
 
   studio.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  studio.setAlwaysOnTop(true);
+  studio.setAlwaysOnTop(true, "screen-saver");
+  studio.setContentProtection(true);
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
