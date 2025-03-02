@@ -1,26 +1,53 @@
-import { hidePluginWindow } from "./utils";
+import axios from "axios";
 import { v4 as uuid } from "uuid";
-import io from "socket.io-client";
 
-let videoTransferFileName: string | undefined;
+let videoFileName: string;
 let mediaRecorder: MediaRecorder;
+let recordedChunks: Blob[] = [];
 let userId: string;
 
-const socket = io(import.meta.env.VITE_SOCKET_URL as string);
-
 export const onDataAvailable = (e: BlobEvent) => {
-  console.log(e.data);
-  socket.emit("video-chunks", {
-    chunks: e.data,
-    fileName: videoTransferFileName,
-  });
+  recordedChunks.push(e.data);
 };
-export const onStopRecording = () => {
-  hidePluginWindow(false);
-  socket.emit("process-video", {
-    fileName: videoTransferFileName,
-    userId,
-  });
+
+export const stopRecording = async (setProgress: (a: number) => void) => {
+  mediaRecorder.stop();
+  try {
+    // Combine all chunks into a single Blob
+    const videoBlob = new Blob(recordedChunks, {
+      type: "video/webm; codecs=vp9",
+    });
+    const formData = new FormData();
+    formData.append("video", videoBlob, videoFileName);
+    formData.append("userId", userId);
+
+    // Upload the file to your Express server
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/upload`,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total!
+          );
+          console.log("Upload progress:", percentCompleted);
+          setProgress(percentCompleted);
+        },
+      }
+    );
+    setProgress(-1);
+
+    // Clear recorded chunks for the next recording
+    recordedChunks = [];
+    window.ipcRenderer.send("show-main");
+  } catch (e) {
+    setProgress(-1);
+    recordedChunks = [];
+    window.ipcRenderer.send("show-main");
+    console.log(e);
+  }
 };
 
 export const selectSources = async (
@@ -78,7 +105,6 @@ export const selectSources = async (
     });
 
     mediaRecorder.ondataavailable = onDataAvailable;
-    mediaRecorder.onstop = onStopRecording;
   }
 };
 
@@ -87,9 +113,7 @@ export const startRecording = (sources: {
   audio: string;
   id: string;
 }) => {
-  hidePluginWindow(true);
-  videoTransferFileName = `${uuid()}-${sources?.id.slice(0, 8)}.webm`;
+  window.ipcRenderer.send("hide-main");
+  videoFileName = `${uuid()}-${sources?.id.slice(0, 8)}.webm`;
   mediaRecorder.start(1000);
 };
-
-export const stopRecording = () => mediaRecorder.stop();
