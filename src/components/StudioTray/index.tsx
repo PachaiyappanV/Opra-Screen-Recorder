@@ -1,7 +1,36 @@
 import { selectSources, startRecording, stopRecording } from "@/lib/recorder";
 import { cn, videoRecordingTime } from "@/lib/utils";
-import { Cast, Pause, Square } from "lucide-react";
+import { Camera, CameraOff, Cast, Pause, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import UploadVideo from "./UploadIndicator";
+
+const Cam = () => {
+  const [showCam, setShowCam] = useState(false);
+
+  return showCam ? (
+    <Camera
+      size={32}
+      className="non-draggable cursor-pointer hover:opacity-60"
+      stroke="white"
+      onClick={() => {
+        window.ipcRenderer.send("hide-webcam");
+
+        setShowCam(false);
+      }}
+    />
+  ) : (
+    <CameraOff
+      size={32}
+      className="non-draggable cursor-pointer hover:opacity-60"
+      stroke="white"
+      onClick={() => {
+        window.ipcRenderer.send("show-webcam");
+
+        setShowCam(true);
+      }}
+    />
+  );
+};
 
 const StudioTray = () => {
   const initialTime = new Date();
@@ -10,6 +39,8 @@ const StudioTray = () => {
   const videoElement = useRef<HTMLVideoElement | null>(null);
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState("00:00:00");
+  const [progress, setProgress] = useState(-1);
+
   const [sources, setSources] = useState<
     | {
         screen: string;
@@ -21,14 +52,29 @@ const StudioTray = () => {
     | undefined
   >(undefined);
 
+  // Handle recording stop and upload
+  const handleStopRecording = async () => {
+    setRecording(false);
+    clearTime();
+    await stopRecording(setProgress);
+  };
+
+  // Reset file path after upload is complete
+
   const clearTime = () => {
     setTimer("00:00:00");
     setCount(0);
   };
 
-  window.ipcRenderer.on("profile-received", (event, payload) => {
-    setSources(payload);
-  });
+  useEffect(() => {
+    window.ipcRenderer.on("profile-received", (event, payload) => {
+      setSources(payload);
+    });
+
+    return () => {
+      window.ipcRenderer.removeAllListeners("profile-received");
+    };
+  }, []);
 
   useEffect(() => {
     if (sources && sources.screen) selectSources(sources, videoElement);
@@ -78,22 +124,20 @@ const StudioTray = () => {
       ></video>
 
       <div className="rounded-full flex justify-around items-center h-20 w-full border-2 bg-[#171717] draggable border-white/40">
-        <div
-          onClick={() => {
-            setRecording(true);
-            startRecording(sources);
-          }}
-          className={cn(
-            "non-draggable rounded-full cursor-pointer relative hover:opacity-80 ",
-            recording ? "bg-red-500 w-6 h-6" : "bg-red-400 w-8 h-8"
-          )}
-        >
-          {recording && (
-            <span className="absolute -right-16 top-1/2 transform -translate-y-1/2 text-white">
-              {timer}
-            </span>
-          )}
-        </div>
+        {!recording ? (
+          <div
+            onClick={() => {
+              setRecording(true);
+              startRecording(sources);
+            }}
+            className={cn(
+              "non-draggable rounded-full cursor-pointer relative hover:opacity-80 ",
+              recording ? "bg-red-500 w-6 h-6" : "bg-red-400 w-8 h-8"
+            )}
+          ></div>
+        ) : (
+          <p className="text-white w-6 mr-5">{timer}</p>
+        )}
         {!recording ? (
           <Pause
             className="non-draggable opacity-50"
@@ -105,11 +149,7 @@ const StudioTray = () => {
             size={32}
             className="non-draggable cursor-pointer hover:scale-110 transform transition duration-150"
             fill="white"
-            onClick={() => {
-              setRecording(false);
-              clearTime();
-              stopRecording();
-            }}
+            onClick={handleStopRecording}
             stroke="white"
           />
         )}
@@ -119,6 +159,9 @@ const StudioTray = () => {
           className="non-draggable cursor-pointer hover:opacity-60"
           stroke="white"
         />
+        <Cam />
+
+        <UploadVideo progress={progress} />
       </div>
     </div>
   );
