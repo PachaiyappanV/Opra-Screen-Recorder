@@ -52,10 +52,6 @@ export const updateStudio = async (
   return response.data;
 };
 
-export const hidePluginWindow = (state: boolean) => {
-  window.ipcRenderer.send("hide-plugin", { state });
-};
-
 export const videoRecordingTime = (ms: number) => {
   const second = Math.floor((ms / 1000) % 60)
     .toString()
