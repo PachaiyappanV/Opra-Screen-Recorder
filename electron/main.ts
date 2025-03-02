@@ -164,8 +164,20 @@ ipcMain.on("resize-studio", (event, payload) => {
   }
 });
 
-ipcMain.on("hide-plugin", (event, payload) => {
-  win?.webContents.send("hide-plugin", payload);
+ipcMain.on("hide-main", () => {
+  win?.hide();
+});
+
+ipcMain.on("show-main", () => {
+  win?.show();
+});
+
+ipcMain.on("hide-webcam", () => {
+  floatingWebCam?.hide();
+});
+
+ipcMain.on("show-webcam", () => {
+  floatingWebCam?.show();
 });
 
 app.on("activate", () => {
