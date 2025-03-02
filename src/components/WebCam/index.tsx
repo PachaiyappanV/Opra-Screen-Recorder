@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 
 const WebCam = () => {
@@ -16,13 +17,17 @@ const WebCam = () => {
   };
 
   useEffect(() => {
+    window.ipcRenderer.send("hide-webcam");
     streamWebCam();
   }, []);
 
   return (
     <video
+      muted
       ref={camElement}
-      className="draggable w-[250px] h-[250px]  object-cover rounded-full  border-2  border-white"
+      className={cn(
+        "draggable w-[250px] h-[250px]  object-cover rounded-full  border-2  border-white"
+      )}
       autoPlay
     ></video>
   );
