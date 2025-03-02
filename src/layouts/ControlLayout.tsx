@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { UserButton } from "@clerk/clerk-react";
 import { X } from "lucide-react";
-import { useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -9,17 +8,10 @@ type Props = {
 };
 
 const ControlLayout = ({ children, className }: Props) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  window.ipcRenderer.on("hide-plugin", (event, payload) => {
-    setIsVisible(payload.state);
-  });
-
   return (
     <div
       className={cn(
         className,
-        isVisible && "invisible",
         "bg-[#171717] border-2 border-white/40 flex px-1 flex-col rounded-3xl overflow-hidden"
       )}
     >
