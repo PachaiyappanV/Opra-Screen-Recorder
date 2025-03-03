@@ -67,7 +67,7 @@ const StudioTray = () => {
   };
 
   useEffect(() => {
-    window.ipcRenderer.on("profile-received", (event, payload) => {
+    window.ipcRenderer.on("profile-received", (_, payload) => {
       setSources(payload);
     });
 
@@ -96,7 +96,7 @@ const StudioTray = () => {
       if (sources?.plan === "FREE" && recordingTime.minute == "05") {
         setRecording(false);
         clearTime();
-        stopRecording();
+        stopRecording(setProgress);
       }
 
       setTimer(recordingTime.length);

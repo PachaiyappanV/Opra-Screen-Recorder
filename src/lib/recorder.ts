@@ -22,21 +22,17 @@ export const stopRecording = async (setProgress: (a: number) => void) => {
     formData.append("userId", userId);
 
     // Upload the file to your Express server
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/upload`,
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
+    await axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
 
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total!
-          );
-          console.log("Upload progress:", percentCompleted);
-          setProgress(percentCompleted);
-        },
-      }
-    );
+      onUploadProgress: (progressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total!
+        );
+        console.log("Upload progress:", percentCompleted);
+        setProgress(percentCompleted);
+      },
+    });
     setProgress(-1);
 
     // Clear recorded chunks for the next recording

@@ -40,7 +40,7 @@ const MediaConfig = ({ state, user }: Props) => {
     audio = state.audioInputs?.[0];
   }
 
-  const { isPending, register, onPreset } = useStudioSettings(
+  const { isPending, register } = useStudioSettings(
     user!.id,
     screen?.id,
     audio?.deviceId,

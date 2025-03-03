@@ -1,6 +1,6 @@
 import { studioSchema, updateStudio } from "@/lib/utils";
 import useZodForm from "./useZodForm";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 
 export const useStudioSettings = (
@@ -10,7 +10,6 @@ export const useStudioSettings = (
   preset?: "SD" | "HD",
   plan?: "PRO" | "FREE"
 ) => {
-  const [onPreset, setPreset] = useState<"SD" | "HD" | undefined>();
   const { register, watch } = useZodForm(studioSchema, {
     screen: screen!,
     audio: audio!,
@@ -61,5 +60,5 @@ export const useStudioSettings = (
     return () => subscribe.unsubscribe();
   }, [watch]);
 
-  return { register, isPending, onPreset };
+  return { register, isPending };
 };
