@@ -1,16 +1,6 @@
 {
-  "config": {
-    "forge": {
-      "makers": [
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
-  },
   "name": "opra",
-  "description": "Opal Screen Recorder - A powerful and simple screen recording app",
+  "description": "Opra Screen Recorder - A powerful and simple screen recording app",
   "author": "pachaiyappan",
   "license": "MIT",
   "private": true,

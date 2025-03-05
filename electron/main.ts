@@ -37,7 +37,6 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     focusable: true,
-
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
