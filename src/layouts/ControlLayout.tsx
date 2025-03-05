@@ -27,7 +27,10 @@ const ControlLayout = ({ children, className }: Props) => {
       </div>
       <div className="flex-1 h-0 overflow-auto">{children}</div>
       <div className="p-5 flex w-full items-center  gap-x-2">
-        <img src="/opal-logo.svg" alt="app logo" />
+        <img
+          src="https://raw.githubusercontent.com/PachaiyappanV/Opra/refs/heads/main/public/opra-logo.svg"
+          alt="app logo"
+        />
         <p className="text-2xl text-white">Opal</p>
       </div>
     </div>
