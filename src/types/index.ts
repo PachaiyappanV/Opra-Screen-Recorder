@@ -32,6 +32,7 @@ export type Profile = {
     } | null;
     id: string;
     email: string;
+    image: string | null;
     firstname: string | null;
     lastname: string | null;
     createdAt: Date;
