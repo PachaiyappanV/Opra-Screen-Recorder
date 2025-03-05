@@ -52,9 +52,9 @@ function App() {
                 userIdRef.current!.value = "";
               }}
               variant="outline"
-              className="border-[#6366F1] text-[#6366F1] hover:bg-[#6366F1] hover:text-white transition"
+              className=" bg-[#bdbbbb]  hover:bg-[#D9D9D9]  transition"
             >
-              {isLoading ? <Loader color="#6366F1" /> : "Submit"}
+              {isLoading ? <Loader /> : "Login"}
             </Button>
           </div>
         ) : (
