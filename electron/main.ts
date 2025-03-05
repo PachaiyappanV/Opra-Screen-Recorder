@@ -37,7 +37,7 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     focusable: true,
-    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
+
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -58,7 +58,7 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     focusable: true,
-    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
+
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -77,7 +77,7 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     focusable: true,
-    icon: path.join(process.env.VITE_PUBLIC, "opal-logo.svg"),
+
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -88,6 +88,7 @@ function createWindow() {
 
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setAlwaysOnTop(true, "screen-saver", 1);
+  win.setContentProtection(true);
 
   studio.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   studio.setAlwaysOnTop(true, "screen-saver", 1);
@@ -151,17 +152,8 @@ ipcMain.handle("getSources", async () => {
   return sources;
 });
 
-ipcMain.on("media-sources", (event, payload) => {
+ipcMain.on("media-sources", (_, payload) => {
   studio?.webContents.send("profile-received", payload);
-});
-
-ipcMain.on("resize-studio", (event, payload) => {
-  if (payload.shrink) {
-    studio?.setSize(400, 100);
-  }
-  if (!payload.shrink) {
-    studio?.setSize(400, 250);
-  }
 });
 
 ipcMain.on("hide-main", () => {
