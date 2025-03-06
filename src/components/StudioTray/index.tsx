@@ -113,7 +113,7 @@ const StudioTray = () => {
   return !sources ? (
     <></>
   ) : (
-    <div className="flex flex-col justify-end gap-y-5 h-screen">
+    <div className={`flex flex-col gap-y-2 h-screen justify-end pb-5`}>
       <video
         autoPlay
         ref={videoElement}

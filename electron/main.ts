@@ -37,6 +37,7 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     focusable: true,
+    icon:"icon.ico",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -56,7 +57,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    focusable: true,
+    focusable: false,
 
     webPreferences: {
       nodeIntegration: false,
@@ -75,7 +76,7 @@ function createWindow() {
     frame: false,
     transparent: true,
     alwaysOnTop: true,
-    focusable: true,
+    focusable: false,
 
     webPreferences: {
       nodeIntegration: false,

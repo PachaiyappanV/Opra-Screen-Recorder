@@ -4,7 +4,7 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 export default {
   packagerConfig: {
     asar: true,
-    icon: "./assets/icon", // Ensure you have "icon.ico" for Windows & "icon.png" for Linux
+    icon: "icon", // Ensure you have "icon.ico" for Windows & "icon.png" for Linux
   },
   rebuildConfig: {},
   makers: [
@@ -13,7 +13,7 @@ export default {
       config: {
         name: "Opra", // Change this to your app's name
         setupExe: "Opra.exe", // The name of the installer
-        setupIcon: "./assets/icon.ico", // Windows requires an `.ico` file
+        setupIcon: "icon.ico", // Windows requires an `.ico` file
       },
     },
   ],
