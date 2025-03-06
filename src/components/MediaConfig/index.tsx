@@ -51,7 +51,7 @@ const MediaConfig = ({ state, user }: Props) => {
   return (
     <form className="flex h-full relative w-full flex-col gap-y-5">
       {isPending && (
-        <div className="fixed z-50 w-[98%] top-1 left-1 right-0 bottom-0 rounded-2xl h-[94.7%] bg-black/90 flex justify-center items-center">
+        <div className="fixed z-50 w-[96%] top-2 left-2 right-0 bottom-0 rounded-2xl h-[94.5%] bg-black/90 flex justify-center items-center">
           <Loader />
         </div>
       )}

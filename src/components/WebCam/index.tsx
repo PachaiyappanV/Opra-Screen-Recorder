@@ -26,7 +26,7 @@ const WebCam = () => {
       muted
       ref={camElement}
       className={cn(
-        "draggable w-[250px] h-[250px]  object-cover rounded-full  border-2  border-white"
+        "draggable w-[250px] h-[250px]  object-cover rounded-full  border-2  border-white mb-2"
       )}
       autoPlay
     ></video>

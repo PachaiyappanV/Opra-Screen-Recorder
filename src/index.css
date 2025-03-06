@@ -62,7 +62,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-transparent p-1 text-foreground overflow-hidden;
+    @apply bg-transparent px-1 text-foreground overflow-hidden;
   }
 }
 

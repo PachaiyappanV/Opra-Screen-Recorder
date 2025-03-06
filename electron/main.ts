@@ -1,6 +1,14 @@
-import { app, BrowserWindow, desktopCapturer, ipcMain } from "electron";
+import { app, BrowserWindow, desktopCapturer, ipcMain} from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('opra', process.execPath, [path.resolve(process.argv[1])])
+  }
+} else {
+  app.setAsDefaultProtocolClient('opra')
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -28,6 +36,25 @@ let win: BrowserWindow | null;
 let studio: BrowserWindow | null;
 let floatingWebCam: BrowserWindow | null;
 
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (win) {
+      if (win.isMinimized()) win.restore()
+      win.focus()
+    }
+
+  })
+
+  app.on('open-url', () => {
+  
+  })
+}
+
 function createWindow() {
   win = new BrowserWindow({
     height: 370,
@@ -45,6 +72,7 @@ function createWindow() {
       preload: path.join(__dirname, "preload.mjs"),
     },
   });
+
 
   studio = new BrowserWindow({
     height: 210,

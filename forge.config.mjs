@@ -5,6 +5,12 @@ export default {
   packagerConfig: {
     asar: true,
     icon: "icon", // Ensure you have "icon.ico" for Windows & "icon.png" for Linux
+   protocols: [
+    {
+      name: 'opra',
+      schemes: ['opra']
+    }
+  ]
   },
   rebuildConfig: {},
   makers: [
