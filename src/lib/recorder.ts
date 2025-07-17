@@ -98,6 +98,8 @@ export const selectSources = async (
 
     mediaRecorder = new MediaRecorder(combinedStream, {
       mimeType: "video/webm; codecs=vp9",
+      videoBitsPerSecond: 2500000,
+      audioBitsPerSecond: 128000,
     });
 
     mediaRecorder.ondataavailable = onDataAvailable;
